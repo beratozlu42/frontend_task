@@ -21,7 +21,8 @@ export default function ProductDetails() {
       .then((data) => setProduct(data));
   }, [id]);
 
-  if (!product) return <div className="p-6">Loading...</div>;
+  if (!product) 
+    return <div className="p-6">Products details cannot found.</div>;
 
   return (
     <div className="p-6 max-w-3xl mx-auto">

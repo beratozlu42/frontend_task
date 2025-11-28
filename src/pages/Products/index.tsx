@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import ProductCard from "./components/ProductCard";
+import styles from './index.module.css'
 import { Result } from "postcss";
 
 interface Product {
@@ -36,28 +37,29 @@ export default function Products() {
   }, [search, products]);
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">Products</h1>
-
-      <input
-        type="text"
-        placeholder="Search..."
-        className="w-full p-3 mb-6 border rounded-lg"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
-
-      {filtered.length == 0 && search.trim() !== "" && (
-        <p className="text-center text-xl text-gray-500">
-          No matching products found.
-        </p>
-      )}
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {filtered.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+    <>
+      <div className={`${styles.section} flex-1 p-6`}>
+        <div className="p-6 max-w-5xl mx-auto">
+          <h1 className="text-3xl text-center font-bold mb-6">Products</h1>
+          <input
+            type="text"
+            placeholder="Search..."
+            className="w-full p-3 mb-6 border focus:border-red-200 focus:outline focus:ring-red-200 rounded-lg"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          {filtered.length == 0 && search.trim() !== "" && (
+            <p className="text-center text-xl text-gray-500">
+              No matching products found.
+            </p>
+          )}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {filtered.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
