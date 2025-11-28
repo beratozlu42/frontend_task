@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
-import ProductCard from "../../components/ProductCard";
+import ProductCard from "./components/ProductCard";
+import { Result } from "postcss";
 
 interface Product {
   id: number;
   title: string;
   price: number;
   category: string;
+  image: string;
 }
 
 export default function Products() {
@@ -13,7 +15,6 @@ export default function Products() {
   const [search, setSearch] = useState("");
   const [filtered, setFiltered] = useState<Product[]>([]);
 
-  // Fetch products
   useEffect(() => {
     fetch("https://fakestoreapi.com/products")
       .then((res) => res.json())
@@ -23,7 +24,6 @@ export default function Products() {
       });
   }, []);
 
-  // Debounce search
   useEffect(() => {
     const timeout = setTimeout(() => {
       const result = products.filter((p) =>
@@ -46,6 +46,12 @@ export default function Products() {
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
+
+      {filtered.length == 0 && search.trim() !== "" && (
+        <p className="text-center text-xl text-gray-500">
+          No matching products found.
+        </p>
+      )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {filtered.map((product) => (

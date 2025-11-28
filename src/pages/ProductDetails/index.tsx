@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 interface Product {
   id: number;
@@ -24,8 +25,8 @@ export default function ProductDetails() {
 
   return (
     <div className="p-6 max-w-3xl mx-auto">
-      <Link to="/" className="text-blue-600 underline">
-        ← Back
+      <Link to="/products" className="text-blue-600 underline">
+        <IoMdArrowRoundBack />
       </Link>
 
       <div className="mt-6 flex flex-col md:flex-row gap-6">
