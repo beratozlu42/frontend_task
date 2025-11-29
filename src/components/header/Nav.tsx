@@ -5,8 +5,8 @@ import { Menu, X } from 'lucide-react';
 const NavLinks = () => {
   return (
     <>
-      <NavLink to='/' className="text-lg font-bold text-red-400 hover:text-red-300">Home</NavLink>
-      <NavLink to='/Products' className="text-lg font-bold text-red-400 hover:text-red-300">Products</NavLink>
+      <NavLink to='/' className="text-lg font-bold text-red-400 hover:text-red-300 underline">Home</NavLink>
+      <NavLink to='/Products' className="text-lg font-bold text-red-400 hover:text-red-300 underline">Products</NavLink>
     </>
   )
 }
