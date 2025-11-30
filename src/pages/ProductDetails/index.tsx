@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { TiShoppingCart } from "react-icons/ti";
-import { LiaStarSolid } from "react-icons/lia";
+import { LiaStarSolid, LiaStar } from "react-icons/lia";
 import styles from './index.module.css';
 
 interface Product {
+  brand: string;
   product_id: string;
   product_name: string;
   category: string;
@@ -18,12 +19,21 @@ interface Product {
   image_url_list: string[];
   review_and_rating: {
     average_rating: number;
-  }
+  };
+  stock_status: {
+    status: string;
+    delivery_time: string;
+  };
+  features: {
+    name: string;
+    value: string;
+  }[];
 }
 
 export default function ProductDetails() {
   const { id } = useParams();
   const [product, setProduct] = useState<Product | null>(null);
+  const totalStars = 5;
 
   useEffect(() => {
     fetch(`http://localhost:3000/products/${id}`)
@@ -37,7 +47,7 @@ export default function ProductDetails() {
 
   return (
     <>
-      <div className={`${styles.section} p-6 mx-auto my-10`}>
+      <div className={`${styles.section} p-6 mx-auto`}>
         <Link to="/products" className="text-red-400 md:text-lg text-md underline flex items-center gap-2">
           <IoMdArrowRoundBack /> Back to Products
         </Link>
@@ -46,19 +56,20 @@ export default function ProductDetails() {
           <div className="w-[100%] mx-auto md:w-1/2">
             <img
               src={product.image_url_list[0]}
-              className="w-full h-[100%] object-contain"
+              className="w-full h-[100%] object-cover"
             />
           </div>
           <div className="w-full md:w-1/2">
-            <p className="text-red-400">Category: {product.category}</p>
-            {Array.from({
-              length: product.review_and_rating.average_rating
-            }).map((_, i) => (
-              <LiaStarSolid className="inline-block text-yellow-400" />
-            ))}
-            <h1 className="text-3xl text-[#470808] font-bold mb-5">{product.product_name}</h1>
+            <h1 className="text-3xl text-[#470808] font-bold">{product.brand}</h1>
+            <h1 className="text-2xl text-[#470808] font-bold">{product.product_name}</h1>
 
-            <p className="mt-4">{product.description}</p>
+            {Array.from({ length: totalStars }).map((_, i) => (
+              i < Math.floor(Number(product.review_and_rating.average_rating)) ? (
+                <LiaStarSolid key={i} className="inline-block text-yellow-400" />
+              ) : (
+                <LiaStar key={i} className="inline-block text-gray-400" />
+              )
+            ))}
 
             <div className="text-red-400 font-bold text-4xl my-5">
               €{product.price_info.discounted_price ?? product.price_info.price}{" "}
@@ -78,8 +89,35 @@ export default function ProductDetails() {
               <TiShoppingCart className="text-2xl my-ao" />
               Add to cart!
             </button>
+
+            <hr className="border-gray-300 mt-10 mb-4" />
+
+            <p className="">{product.description}</p>
+
+            <div className="overflow-x-auto my-10">
+              <table className="min-w-max w-full rounded-lg">
+                <thead>
+                  <tr className="bg-red-100">
+                    <th className="px-4 py-3 text-left">Features</th>
+                    <th className="px-4 py-3 text-left"></th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {product.features?.map((feature, i) => (
+                    <tr key={i}>
+                      <td className="px-4 py-3 font-medium">{feature.name}:</td>
+                      <td className="px-4 py-3">{feature.value}</td>
+                    </tr>
+                  ))}
+                </tbody>
+
+              </table>
+            </div>
           </div>
         </div>
+
+
       </div>
     </>
   );

@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
-import { LiaStarSolid } from "react-icons/lia";
+import { LiaStarSolid, LiaStar } from "react-icons/lia";
+import index from "../../../Home";
 
 interface Product {
+  brand: string;
   product_id: string;
   product_name: string;
   category: string;
@@ -20,6 +22,8 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const totalStars = 5;
+
   return (
     <Link
       to={`/product/${product.product_id}`}
@@ -29,22 +33,32 @@ export default function ProductCard({ product }: ProductCardProps) {
         src={product.image_url_list[0]}
         className="w-full h-64 object-contain mx-auto mb-3"
       />
-
       <div>
-        <h2 className="text-[#470808] font-semibold text-lg">
+        <span className="text-[#470808] font-bold text-xl ">{product.brand}</span><br />
+        <span className="text-[#470808] font-semibold text-lg">
           {product.product_name}
-        </h2>
+        </span>
 
         <p className="text-gray-500">Category: {product.category}</p>
 
-        {Array.from({
-          length: product.review_and_rating.average_rating
-        }).map((_, i) => (
-          <LiaStarSolid className="inline-block text-yellow-400" />
+        { /* turning ratings into stars */ }
+        {Array.from({ length: totalStars }).map((_, i) => (
+          i < Math.floor(Number(product.review_and_rating.average_rating)) ? (
+            <LiaStarSolid key={i} className="inline-block text-yellow-400" />
+          ) : (
+            <LiaStar key={i} className="inline-block text-gray-400" />
+          )
         ))}
 
         <p className="text-red-400 font-bold mt-4">
           €{product.price_info.discounted_price ?? product.price_info.price}
+          {product.price_info.discounted_price && (
+            <>
+              <span className="text-gray-400 font-light line-through ml-2">
+                €{product.price_info.price}
+              </span>
+            </>
+          )}
         </p>
       </div>
     </Link>
