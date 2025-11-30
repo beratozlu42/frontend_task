@@ -17,7 +17,7 @@ const index = () => {
           <button 
             className="px-2 py-1 md:text-lg md:px-4 md:py-2 my-5 bg-red-400 text-white rounded hover:bg-red-300" 
             onClick={() => navigate("/products")}>
-              Order Now!
+              Our Products
           </button>        
         </div>
         <img src={img} alt="img" className="w-[100%]" />

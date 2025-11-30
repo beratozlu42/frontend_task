@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import ProductCard from "./components/ProductCard";
 import styles from './index.module.css';
+import { useLocation } from 'react-router-dom';
 
 interface Product {
+  brand: string;
   product_id: string;
   product_name: string;
   category: string;
@@ -17,13 +19,19 @@ interface Product {
 }
 
 export default function Products() {
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const search = params.get('search') || '';
+  const [loading, setLoading] = useState(false);
+
+
   const [products, setProducts] = useState<Product[]>([]);
-  const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
+      setLoading(true);
       fetch(`http://localhost:3000/products?search=${search}&page=${page}&limit=15`)
         .then((res) => res.json())
         .then((data) => {
@@ -31,7 +39,8 @@ export default function Products() {
           setTotalPages(data.totalPages);
           window.scrollTo({ top: 0, behavior: 'smooth' });
         })
-        .catch((err) => console.error(err));
+        .catch((err) => console.error(err))
+        .finally(() => setLoading(false));
     }, 400);
     return () => clearTimeout(timeout);
   }, [search, page]);
@@ -47,8 +56,10 @@ export default function Products() {
   return (
     <div className={`${styles.section} flex-1 p-6`}>
       <div className="p-6 max-w-5xl mx-auto">
-        <h1 className="text-3xl text-[#470808] text-center font-bold mb-6">Products</h1>
-        <input
+        <h1 className="text-3xl text-[#470808] text-left font-bold">Products</h1>
+        <hr className="mb-6 border-gray-300" />
+
+        {/*<input
           type="text"
           placeholder="Search..."
           className="w-full p-3 mb-6 border rounded-lg focus:outline focus:ring-red-200"
@@ -57,7 +68,7 @@ export default function Products() {
             setSearch(e.target.value);
             setPage(1);
           }}
-        />
+        />*/}
 
         {products?.length === 0 && search.trim() !== "" && (
           <p className="text-center text-xl text-gray-500">
@@ -65,11 +76,17 @@ export default function Products() {
           </p>
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {products?.map((product) => (
-            <ProductCard key={product.product_id} product={product} />
-          ))}
-        </div>
+        {loading ? (
+          <p className="text-center text-xl py-10 animate-pulse text-gray-500">
+            Loading...
+          </p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {products?.map((product) => (
+              <ProductCard key={product.product_id} product={product} />
+            ))}
+          </div>
+        )}
 
         {products?.length !== 0 && (
           <div className="flex justify-center items-center mt-6 space-x-4">
