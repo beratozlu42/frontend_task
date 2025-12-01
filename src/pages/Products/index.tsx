@@ -29,6 +29,28 @@ export default function Products() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
+  /* This was the old api I was using. Current api does the search in backend.
+
+  useEffect(() => {
+    fetch("https://fakestoreapi.com/products")
+      .then((res) => res.json())
+      .then((data) => {
+        setProducts(data);
+        setFiltered(data);
+      });
+  }, []);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      const result = products.filter((p) =>
+        p.title.toLowerCase().includes(search.toLowerCase())
+      );
+      setFiltered(result);
+    }, 400);
+    return () => clearTimeout(timeout);
+  }, [search, products]);
+  */
+
   useEffect(() => {
     const timeout = setTimeout(() => {
       setLoading(true);

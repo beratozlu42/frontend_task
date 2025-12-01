@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { TiShoppingCart } from "react-icons/ti";
-import { LiaStarSolid, LiaStar } from "react-icons/lia";
+import { FaRegCircleUser } from "react-icons/fa6";
+import RatingStars from "../../components/ratingStars/ratingStars"
 import styles from './index.module.css';
 
 interface Product {
@@ -19,6 +20,8 @@ interface Product {
   image_url_list: string[];
   review_and_rating: {
     average_rating: number;
+    total_reviews: number;
+    latest_review_summary: string;
   };
   stock_status: {
     status: string;
@@ -47,7 +50,7 @@ export default function ProductDetails() {
 
   return (
     <>
-      <div className={`${styles.section} p-6 mx-auto`}>
+      <div className={`${styles.section} p-6`}>
         <Link to="/products" className="text-red-400 md:text-lg text-md underline flex items-center gap-2">
           <IoMdArrowRoundBack /> Back to Products
         </Link>
@@ -63,13 +66,14 @@ export default function ProductDetails() {
             <h1 className="text-3xl text-[#470808] font-bold">{product.brand}</h1>
             <h1 className="text-2xl text-[#470808] font-bold">{product.product_name}</h1>
 
-            {Array.from({ length: totalStars }).map((_, i) => (
-              i < Math.floor(Number(product.review_and_rating.average_rating)) ? (
-                <LiaStarSolid key={i} className="inline-block text-yellow-400" />
-              ) : (
-                <LiaStar key={i} className="inline-block text-gray-400" />
-              )
-            ))}
+            <a className=""
+              onClick={() => {
+                const reviewsSection = document.getElementById("reviews-section");
+                reviewsSection?.scrollIntoView({ behavior: "smooth" });
+              }}>
+              <RatingStars rating = {product.review_and_rating.average_rating}/>
+              <p className="text-sm text-gray-400">{product.review_and_rating.total_reviews} reviews</p>
+            </a>
 
             <div className="text-red-400 font-bold text-4xl my-5">
               €{product.price_info.discounted_price ?? product.price_info.price}{" "}
@@ -93,9 +97,10 @@ export default function ProductDetails() {
             <hr className="border-gray-300 mt-10 mb-4" />
 
             <p className="">{product.description}</p>
+            <p className="mt-3">Delivery time: <span className="font-bold">{product.stock_status.delivery_time}</span></p>
 
-            <div className="overflow-x-auto my-10">
-              <table className="min-w-max w-full rounded-lg">
+            <div className="overflow-x-auto my-8">
+              <table className="min-w-max w-full rounded-lg ">
                 <thead>
                   <tr className="bg-red-100">
                     <th className="px-4 py-3 text-left">Features</th>
@@ -116,8 +121,34 @@ export default function ProductDetails() {
             </div>
           </div>
         </div>
-
-
+        <div className="container my-10 border border-gray-300 rounded-3xl p-10" id="reviews-section">
+          <div className="flex flex-col md:flex-row gap-14">
+            <div className="w-full md:w-1/2 flex flex-col items-center text-center space-y-4">
+              <h1 className="text-xl text-[#470808] font-semibold">Average rating of this product:</h1>
+              <h1 className="text-8xl text-[#470808] font-bold">{product.review_and_rating.average_rating}</h1>
+              <div className="flex gap-1">
+                <RatingStars rating={product.review_and_rating.average_rating} className="text-4xl"/>
+              </div>
+              <p className="text-gray-500 text-sm">
+                Based on {product.review_and_rating.total_reviews} reviews
+              </p>
+            </div>
+            <div className="w-full md:w-1/2 flex justify-center items-center">
+              <div className="border border-gray-200 rounded-xl p-6 shadow-lg w-full max-w-md">
+                <div className="flex items-center gap-3 mb-3">
+                  <FaRegCircleUser className="text-5xl text-[#470808]" />
+                  <div>
+                    <p className="font-medium text-[#470808]">Random User</p>
+                    <p className="text-sm text-gray-500">Latest review</p>
+                  </div>
+                </div>
+                <p className="text-[#470808]">
+                  {product.review_and_rating.latest_review_summary}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );
