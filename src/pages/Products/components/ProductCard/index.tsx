@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { LiaStarSolid, LiaStar } from "react-icons/lia";
+import RatingStars from "../../../../components/ratingStars/ratingStars"
 import index from "../../../Home";
 
 interface Product {
@@ -42,13 +42,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         <p className="text-gray-500">Category: {product.category}</p>
 
         { /* turning ratings into stars */ }
-        {Array.from({ length: totalStars }).map((_, i) => (
-          i < Math.floor(Number(product.review_and_rating.average_rating)) ? (
-            <LiaStarSolid key={i} className="inline-block text-yellow-400" />
-          ) : (
-            <LiaStar key={i} className="inline-block text-gray-400" />
-          )
-        ))}
+        <RatingStars rating={product.review_and_rating.average_rating} />
 
         <p className="text-red-400 font-bold mt-4">
           €{product.price_info.discounted_price ?? product.price_info.price}
