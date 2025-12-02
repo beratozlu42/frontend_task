@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import ProductCard from "./components/ProductCard";
+import ProductCard from "./components/ProductCard"
 import styles from './index.module.css';
 import { useLocation } from 'react-router-dom';
 
@@ -30,7 +30,6 @@ export default function Products() {
   const [totalPages, setTotalPages] = useState(1);
 
   /* This was the old api I was using. Current api does the search in backend.
-
   useEffect(() => {
     fetch("https://fakestoreapi.com/products")
       .then((res) => res.json())
@@ -81,6 +80,7 @@ export default function Products() {
         <h1 className="text-3xl text-[#470808] text-left font-bold">Products</h1>
         <hr className="mb-6 border-gray-300" />
 
+        {/* Moved to header */} 
         {/*<input
           type="text"
           placeholder="Search..."

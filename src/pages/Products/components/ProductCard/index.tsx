@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import RatingStars from "../../../../components/ratingStars/ratingStars"
-import index from "../../../Home";
 
 interface Product {
   brand: string;
@@ -22,8 +21,6 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
-  const totalStars = 5;
-
   return (
     <Link
       to={`/product/${product.product_id}`}
