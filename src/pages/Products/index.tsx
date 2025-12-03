@@ -28,6 +28,11 @@ export default function Products() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
+  // If user searchs from another page it will go back to page 1 to give the results.
+  useEffect(() => {
+    setPage(1);
+  }, [search]);
+
   /* This was the old api I was using. Current api does the search in backend.
   useEffect(() => {
     fetch("https://fakestoreapi.com/products")
@@ -52,7 +57,7 @@ export default function Products() {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setLoading(true);
-      fetch(`http://localhost:3000/products?search=${search}&page=${page}&limit=15`)
+      fetch(`https://api.case.beratozlu.com.tr/products?search=${search}&page=${page}&limit=15`)
         .then((res) => res.json())
         .then((data) => {
           setProducts(data.data);
@@ -79,7 +84,7 @@ export default function Products() {
         <h1 className="text-3xl text-[#470808] text-left font-bold">Products</h1>
         <hr className="mb-6 border-gray-300" />
 
-        {/* Moved to header */} 
+        {/* Moved to header */}
         {/*<input
           type="text"
           placeholder="Search..."

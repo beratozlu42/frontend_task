@@ -37,10 +37,10 @@ interface Product {
 export default function ProductDetails() {
   const { id } = useParams();
   const [product, setProduct] = useState<Product | null>(null);
-  const [mainImage, setMainImage] = useState<string>(""); // For the image buttons
+  const [_, setMainImage] = useState<string>(""); // For the image buttons
 
   useEffect(() => {
-    fetch(`http://localhost:3000/products/${id}`)
+    fetch(`https://api.case.beratozlu.com.tr/products/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setProduct(data);

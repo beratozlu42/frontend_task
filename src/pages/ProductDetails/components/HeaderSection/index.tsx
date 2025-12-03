@@ -1,4 +1,3 @@
-import React from 'react'
 import { TiShoppingCart } from "react-icons/ti";
 import RatingStars from "../../../../components/ratingStars/ratingStars"
 
@@ -39,7 +38,7 @@ export default function HeaderSection({ product }: ProductProps) {
           reviewsSection?.scrollIntoView({ behavior: "smooth" });
         }}>
         <RatingStars rating={product.review_and_rating.average_rating} />
-        <p className="text-sm text-gray-400">{product.review_and_rating.total_reviews} reviews</p>
+        <p className="text-sm text-gray-400 underline">{product.review_and_rating.total_reviews} reviews</p>
       </a>
 
       <div className="text-red-400 font-bold text-4xl my-5">

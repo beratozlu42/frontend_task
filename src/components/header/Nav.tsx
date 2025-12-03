@@ -18,15 +18,17 @@ export const Nav = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
+  const isProductsPage = location.pathname.includes("/products");
+
   const params = new URLSearchParams(location.search);
   const [search, setSearch] = useState(params.get('search') || '');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const isProductsPage = location.pathname.includes("/products");
-
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
-    navigate(`/products?search=${e.target.value}`);
+    const value = e.target.value;
+    setSearch(value);
+  
+    navigate(`/products?search=${value}`);
   };
 
   return (
@@ -48,6 +50,7 @@ export const Nav = () => {
                 className="border border-gray-400 text-gray-600 rounded-xl mr-2 p-1 focus:outline focus:border-[#470808] focus:outline-[#470808] md:p-2 md:mx-2"
               />
             )}
+            
             {navItems.map((item) => (
               <NavLink key={item.name} to={item.href} className={item.className}>
                 {item.name}
