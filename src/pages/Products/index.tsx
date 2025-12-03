@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ProductCard from "./components/ProductCard"
-import styles from './index.module.css';
+import styles from './index.module.css'; //For the FadeIn animation I used custom css.
 import { useLocation } from 'react-router-dom';
 
 interface Product {
@@ -22,9 +22,8 @@ export default function Products() {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const search = params.get('search') || '';
+
   const [loading, setLoading] = useState(false);
-
-
   const [products, setProducts] = useState<Product[]>([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);

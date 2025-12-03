@@ -35,7 +35,7 @@ export default function HeaderSection({ product }: ProductProps) {
 
       <a className=""
         onClick={() => {
-          const reviewsSection = document.getElementById("reviews-section");
+          const reviewsSection = document.getElementById("reviews-section"); //when clicked the screen goes to the reviews section
           reviewsSection?.scrollIntoView({ behavior: "smooth" });
         }}>
         <RatingStars rating={product.review_and_rating.average_rating} />

@@ -44,13 +44,14 @@ export default function ProductDetails() {
       .then((res) => res.json())
       .then((data) => {
         setProduct(data);
-        setMainImage(data.image_url_list[0]);
+        setMainImage(data.image_url_list[0]); // The first image is set as the main image.
       })
       .catch((err) => console.error(err));
   }, [id]);
 
-  if (!product)
+  if (!product) {
     return <div className="p-6 text-center animate-pulse">Loading...</div>;
+  }
 
   return (
     <>
